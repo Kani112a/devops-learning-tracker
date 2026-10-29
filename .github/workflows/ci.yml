@@ -22,17 +22,37 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
+      
+      - name: Install SonarScanner for .NET
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Restore dependencies
         run: dotnet restore ./DevOpsTracker.Api/DevOpsTracker.Api.csproj
 
-      - name: Build application and tests
+      - name: Begin SonarQube Cloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet sonarscanner begin \
+            /k:"Kani112a_devops-learning-tracker" \
+            /o:"kani112a" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="$SONAR_TOKEN" \
+            /d:sonar.qualitygate.wait=true \
+            /d:sonar.qualitygate.timeout=300
+
+      - name: Build application
         run: dotnet build ./DevOpsTracker.Api/DevOpsTracker.Api.csproj --configuration Release --no-restore
 
       - name: Run automated tests
-        run: dotnet test ./DevOpsTracker.Api/DevOpsTracker.Api.csproj --configuration Release --no-build --logger "console;verbosity=normal"
+        run: dotnet test ./DevOpsTracker.Api/DevOpsTracker.Api.csproj --configuration Release --logger "console;verbosity=normal"
 
-      
+      - name: Finish SonarQube Cloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
       
       - name: Build Docker image
         run: docker build -t kanishka01/devops-tracker-api:latest -f ./DevOpsTracker.Api/DockerFile ./DevOpsTracker.Api

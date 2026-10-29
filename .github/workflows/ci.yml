@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: ./DevOpsTracker.Api
-          file: ./DevOpsTracker.Api/Dockerfile
+          file: ./DevOpsTracker.Api/DockerFile
           push: true
           tags: kanishka01/devops-tracker-api:latest
       

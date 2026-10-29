@@ -55,9 +55,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
-      
-      - name: Build Docker image
-        
+
       - name: Build Docker image
         run: |
           docker build \

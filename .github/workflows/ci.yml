@@ -33,13 +33,14 @@ jobs:
         run: dotnet test ./DevOpsTracker.Api/DevOpsTracker.Api.csproj --configuration Release --no-build --logger "console;verbosity=normal"
 
       
-      - name: Build Docker image for security scan
-        run: docker build -t devopstracker-api:scan ./DevOpsTracker.Api
+      
+      - name: Build Docker image
+        run: docker build -t kanishka01/devops-tracker-api:latest -f ./DevOpsTracker.Api/DockerFile ./DevOpsTracker.Api
 
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: devopstracker-api:scan
+          image-ref: kanishka01/devops-tracker-api:latest
           format: table
           exit-code: '1'
           ignore-unfixed: true

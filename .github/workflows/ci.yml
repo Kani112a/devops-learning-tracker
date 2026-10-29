@@ -57,7 +57,10 @@ jobs:
         run: dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
       
       - name: Build Docker image
-        run: docker build -t kanishka01/devops-tracker-api:latest -f ./DevOpsTracker.Api/DockerFile ./DevOpsTracker.Api
+        
+      - name: Build Docker image
+        run: |
+          docker build \ -t kanishka01/devops-tracker-api:latest \ -f ./DevOpsTracker.Api/DockerFile \ ./DevOpsTracker.Api
 
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0

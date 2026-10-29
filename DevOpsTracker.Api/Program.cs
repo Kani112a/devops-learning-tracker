@@ -14,8 +14,8 @@ app.MapGet("/api/topics", () =>
     var topics = new[]
     {
         new { id = 1, name = "Linux", status = "Completed" },
-        new { id = 2, name = "Git", status = "In Progress" },
-        new { id = 3, name = "Docker", status = "Not Started" },
+        new { id = 2, name = "Git", status = "Completed" },
+        new { id = 3, name = "Docker", status = "Completed" },
         new { id = 4, name = "Jenkins", status = "Not Started" },
         new { id = 5, name = "Kubernetes", status = "Not Started" }
     };

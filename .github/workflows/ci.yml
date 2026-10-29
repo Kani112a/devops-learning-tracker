@@ -99,14 +99,6 @@ jobs:
       - name: Push scanned Docker image
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: docker push kanishka01/devops-tracker-api:latest
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v7
-        with:
-          context: ./DevOpsTracker.Api
-          file: ./DevOpsTracker.Api/DockerFile
-          push: true
-          tags: kanishka01/devops-tracker-api:latest
       
       - name: Deploy to Render
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
